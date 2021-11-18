@@ -1,4 +1,3 @@
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -47,7 +46,9 @@ public class App extends Application {
    @Override 
    public void start(Stage stage) throws Exception{  
       GridPane root = new GridPane();
-      root.setPadding(new Insets(10, 10, 10, 10));
+      root.setPadding(new Insets(20, 20, 20, 20));
+      root.setVgap(15);
+      // root.setHgap(15);
       Scene scene = new Scene(root,500,500);
       Image img = new Image("happy.png");
 
@@ -88,12 +89,28 @@ public class App extends Application {
       GridPane.setConstraints(wlabel, 3, 1);
       GridPane.setConstraints(weight, 4, 1);
 
+      Label ilabel = new Label("Injured? ");
+      injured = new CheckBox();
+      GridPane.setConstraints(ilabel, 0, 2);
+      GridPane.setConstraints(injured, 1, 2);
+
+      Label vlabel = new Label("Vaccinated? ");
+      vaccinated = new CheckBox();
+      GridPane.setConstraints(vlabel, 3, 2);
+      GridPane.setConstraints(vaccinated, 4, 2);
       
+      register = new Button("Register");
+      GridPane.setConstraints(register, 2, 4);
+
       g.getChildren().addAll(name, namelabel, agelabel, age,
-      splabel, species, wlabel, weight);
+      splabel, species, wlabel, weight,
+      ilabel, injured, vlabel, vaccinated, register);
       
 
+
    }
+
+   
             
    public static void main(String args[]){ 
       launch(args); 
