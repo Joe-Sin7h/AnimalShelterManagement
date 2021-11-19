@@ -10,15 +10,21 @@ import javafx.scene.Group;
 // import javafx.geometry.Pos; 
 
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.skin.ChoiceBoxSkin;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
@@ -43,24 +49,49 @@ public class App extends Application {
    CheckBox injured, vaccinated;
    ChoiceBox<String> species;
 
+   // Databse
    Mysql db;
+
+   // Menu
+   Menu file;
+   MenuBar menubar;
+
+   // Layouts
+   GridPane grid;
+   BorderPane borderPane;
    
    @Override 
    public void start(Stage stage) throws Exception{ 
+
       db = new Mysql(); 
-      GridPane root = new GridPane();
-      root.setPadding(new Insets(15, 15, 15, 15));
-      root.setVgap(15);
-      // root.setHgap(15);
-      Scene scene = new Scene(root,500,500);
+      grid = new GridPane();
+      borderPane = new BorderPane();
+
+      grid.setPadding(new Insets(15, 15, 15, 15));
+      grid.setVgap(15);
+      // grid.setHgap(15);
+
+      file = new Menu("FILE");
+      MenuItem regist = new MenuItem("Registration");
+      MenuItem info = new MenuItem("Animal Info");
+
+      file.getItems().addAll(regist, info);
+
+      menubar = new MenuBar();
+      menubar.getMenus().add(file);
+
+      borderPane.setTop(menubar);
+      borderPane.setCenter(grid);
+      //  
+      Scene scene = new Scene(borderPane,500,500);
       Image img = new Image("happy.png");
 
       
       
-      registerscreen(root);
+      registerscreen(grid);
       
       stage.getIcons().add(img);
-      stage.setTitle("Aniaml Shelter Management");
+      stage.setTitle("Animal Shelter Management");
       stage.setScene(scene);
       // stage.setFullScreen(true);
       // stage.setFullScreenExitHint("Welcome to my application");
@@ -136,8 +167,18 @@ public class App extends Application {
          Animal ani = new Animal(n,s,a,w,i,v);
          db.insertData(ani);
 
+         Alert alert = new Alert(AlertType.INFORMATION);
+         alert.setContentText("Details added!");
+         alert.setTitle("SUCCESSFUL");
+         alert.show();
+
+
       }
       else{
+         Alert error = new Alert(AlertType.ERROR);
+         // error.setContentText("");
+         error.setTitle("ERROR");
+         error.show();
          System.out.println("Failed");
       }
 
