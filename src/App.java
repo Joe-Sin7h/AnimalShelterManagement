@@ -46,7 +46,7 @@ public class App extends Application {
    @Override 
    public void start(Stage stage) throws Exception{  
       GridPane root = new GridPane();
-      root.setPadding(new Insets(20, 20, 20, 20));
+      root.setPadding(new Insets(15, 15, 15, 15));
       root.setVgap(15);
       // root.setHgap(15);
       Scene scene = new Scene(root,500,500);
@@ -102,16 +102,18 @@ public class App extends Application {
       register = new Button("Register");
       GridPane.setConstraints(register, 2, 4);
 
+      createAnimal();
+
       g.getChildren().addAll(name, namelabel, agelabel, age,
       splabel, species, wlabel, weight,
       ilabel, injured, vlabel, vaccinated, register);
       
-
+   }
+   
+   private void createAnimal(){
+      Animal a = new Animal();
 
    }
-
-   
-            
    public static void main(String args[]){ 
       launch(args); 
    } 
