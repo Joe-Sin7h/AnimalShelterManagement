@@ -7,10 +7,14 @@ public class Mysql {
     Statement smt;
     private String USER;
     private String PASSWORD;
+    ResultSet result;
 
     public static void main(String args[]) throws SQLException{
         Mysql mysql = new Mysql();
+        ResultSet rs = mysql.fetchData();
         
+        rs.next();
+        System.out.println(rs.getString(2));
 
     }
 
@@ -46,7 +50,7 @@ public class Mysql {
 
     public ResultSet fetchData(){
         String table = "SELECT * from animaldetails";
-        ResultSet result;
+        
         try{
             result =  smt.executeQuery(table);
             // return result;
@@ -54,7 +58,9 @@ public class Mysql {
         catch(Exception e){
             e.printStackTrace();
         }
+
         return result;
+        
 
         
 
