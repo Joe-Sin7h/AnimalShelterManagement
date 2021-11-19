@@ -3,6 +3,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.collections.FXCollections; 
 import javafx.collections.ObservableList; 
 import javafx.scene.Group;
@@ -24,7 +25,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage; 
 
 import java.sql.*;
@@ -49,6 +52,7 @@ public class App extends Application {
    GridPane grid;
    BorderPane borderPane;
    Group displaygrid;
+   HBox hbox;
 
    // Scenes
    Scene scene;
@@ -65,36 +69,41 @@ public class App extends Application {
       grid = new GridPane();
       displaygrid = new Group();
       borderPane = new BorderPane();
+      hbox = new HBox();
 
-      grid.setPadding(new Insets(15, 15, 15, 15));
-      grid.setVgap(15);
+      grid.setPadding(new Insets(30, 30, 30, 30));
+      grid.setVgap(25);
+      
       // grid.setHgap(15);
 
       file = new Menu("FILE");
       MenuItem regist = new MenuItem("Registration");
-      regist.setOnAction(e -> borderPane.setCenter(grid));
+      regist.setOnAction(e -> {
+         borderPane.setCenter(grid);
+         borderPane.setBottom(hbox);
+      });
       MenuItem info = new MenuItem("Animal Info");
       info.setOnAction(e -> fillTable());
 
       file.getItems().addAll(regist, info);
+      info.setStyle("-fx-text-fill: #262729;");
+      regist.setStyle("-fx-text-fill: #262729;");
 
       menubar = new MenuBar();
       menubar.getMenus().add(file);
+      menubar.setStyle("-fx-background-color: #262729;");
 
       borderPane.setTop(menubar);
       borderPane.setCenter(grid);
-      //  
-      scene = new Scene(borderPane,700,500);
+      borderPane.setBottom(hbox);
+
+      scene = new Scene(borderPane,600,500);
       Image img = new Image("happy.png");
 
-
-
-      
-      
       registerscreen(grid);
       tabledisplay();
       displaygrid.getChildren().addAll(table);
-      
+      scene.getStylesheets().add(getClass().getResource("scene.css").toExternalForm());
       stage.getIcons().add(img);
       stage.setTitle("Animal Shelter Management");
       stage.setScene(scene);
@@ -135,22 +144,31 @@ public class App extends Application {
 
       Label vlabel = new Label("Vaccinated? ");
       vaccinated = new CheckBox();
-      GridPane.setConstraints(vlabel, 3, 2);
-      GridPane.setConstraints(vaccinated, 4, 2);
-      
+      GridPane.setConstraints(vlabel, 4, 2);
+      GridPane.setConstraints(vaccinated, 5, 2);
+       
+      Label t = new Label("   ");
+      Label t2 = new Label("   ");
+      GridPane.setConstraints(t, 2, 3);
+      GridPane.setConstraints(t2, 3, 4);
       register = new Button("Register");
       register.setOnAction(e -> registerEvent());
-      GridPane.setConstraints(register, 2, 4);
-
+      // GridPane.setConstraints(register, 2, 4);
 
       g.getChildren().addAll(name, namelabel, agelabel, age,
       splabel, species, wlabel, weight,
-      ilabel, injured, vlabel, vaccinated, register);
+      ilabel, injured, vlabel, vaccinated, t);
+
+      hbox.getChildren().add(register);
+      hbox.setAlignment(Pos.TOP_CENTER);
+      // hbox.setPrefWidth(200);
+      hbox.setMinHeight(200);
       
    }
    
    
    private void registerEvent(){
+      
       
       String n,s,i,v;
       int a,w;
@@ -211,11 +229,12 @@ public class App extends Application {
 
    private void tabledisplay(){
 
-
+      
       table = new TableView();
       table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
       TableColumn<Animal, String> IdCol = new TableColumn("Id");
       IdCol.setCellValueFactory(new PropertyValueFactory<>("sno"));
+      
 
       TableColumn<Animal, String> AgeCol = new TableColumn("Age");
       AgeCol.setCellValueFactory(new PropertyValueFactory<>("age"));
@@ -247,6 +266,7 @@ public class App extends Application {
    private void fillTable(){
 
       borderPane.setCenter(displaygrid);
+      borderPane.setBottom(null);
       ResultSet rs = db.fetchData();
       table.getItems().clear();
       try{

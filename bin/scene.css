@@ -1,0 +1,30 @@
+BorderPane{
+    -fx-background-color: #303236;
+}
+
+
+.root {
+    -fx-button-hover-color: #ffffff ;
+}
+
+#register{
+    -fx-background-color: #005296
+}
+
+#register:hover {
+   -fx-background-color: button-hover-color ;
+}
+
+
+.label{
+    -fx-text-fill:#dddddd;
+}
+
+.choice-box .label{
+  -fx-text-fill:#262729;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #262729;
+    -fx-font-weight: bold;
+}
