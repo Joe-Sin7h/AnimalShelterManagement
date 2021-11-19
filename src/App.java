@@ -11,7 +11,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -22,7 +21,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.skin.ChoiceBoxSkin;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -86,7 +84,7 @@ public class App extends Application {
       borderPane.setTop(menubar);
       borderPane.setCenter(grid);
       //  
-      scene = new Scene(borderPane,500,500);
+      scene = new Scene(borderPane,700,500);
       Image img = new Image("happy.png");
 
 
@@ -215,12 +213,17 @@ public class App extends Application {
 
 
       table = new TableView();
+      table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+      TableColumn<Animal, String> IdCol = new TableColumn("Id");
+      IdCol.setCellValueFactory(new PropertyValueFactory<>("sno"));
+
       TableColumn<Animal, String> AgeCol = new TableColumn("Age");
       AgeCol.setCellValueFactory(new PropertyValueFactory<>("age"));
 
       
       TableColumn<Animal, String> NameCol = new TableColumn("Name");
       NameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+      // NameCol.setMinWidth(100);
 
       TableColumn<Animal, String> SpeciesCol = new TableColumn("Species");
       SpeciesCol.setCellValueFactory(new PropertyValueFactory<>("species"));
@@ -234,7 +237,7 @@ public class App extends Application {
       TableColumn<Animal, String> Vaccinated = new TableColumn("Vaccinated");
       Vaccinated.setCellValueFactory(new PropertyValueFactory<>("Vaccinated"));
       
-      table.getColumns().addAll( NameCol, SpeciesCol,
+      table.getColumns().addAll(IdCol, NameCol, SpeciesCol,
       AgeCol, WeightCol, InjuredCol, Vaccinated);
       
       // table.getItems().add(new Animal("JOE", "Dog", 12, 15, "Yes", "No"));
@@ -245,10 +248,10 @@ public class App extends Application {
 
       borderPane.setCenter(displaygrid);
       ResultSet rs = db.fetchData();
-      
+      table.getItems().clear();
       try{
          while(rs.next()){
-            table.getItems().add(new Animal(rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getString(6),
+            table.getItems().add(new Animal( rs.getInt(1),rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getString(6),
             rs.getString(7)));
          }
 
@@ -258,9 +261,6 @@ public class App extends Application {
       }
       
    }
-
-   
-
 
    public static void main(String args[]){ 
       launch(args); 

@@ -5,6 +5,7 @@ public class Animal {
     int weight;
     String injured;
     String vaccinated;
+    int sno;
 
     public static void main(String args[]){
  
@@ -19,6 +20,24 @@ public class Animal {
         vaccinated = v;
     }
 
+    Animal( int sn, String n, String s, int a, int w, String i, String v){
+        name = n;
+        species = s;
+        age = a;
+        weight = w;
+        injured = i;
+        vaccinated = v;
+        sno = sn;
+    }
+
+    public int getSno(){
+        return sno;
+    }
+
+    public void setSno(int sno){
+        this.sno = sno;
+    }
+    
     public String getName() {
         return name;
     }
