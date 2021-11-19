@@ -42,9 +42,12 @@ public class App extends Application {
    RadioButton gender;
    CheckBox injured, vaccinated;
    ChoiceBox<String> species;
+
+   Mysql db;
    
    @Override 
-   public void start(Stage stage) throws Exception{  
+   public void start(Stage stage) throws Exception{ 
+      db = new Mysql(); 
       GridPane root = new GridPane();
       root.setPadding(new Insets(15, 15, 15, 15));
       root.setVgap(15);
@@ -100,9 +103,9 @@ public class App extends Application {
       GridPane.setConstraints(vaccinated, 4, 2);
       
       register = new Button("Register");
+      register.setOnAction(e -> registerEvent());
       GridPane.setConstraints(register, 2, 4);
 
-      createAnimal();
 
       g.getChildren().addAll(name, namelabel, agelabel, age,
       splabel, species, wlabel, weight,
@@ -110,8 +113,53 @@ public class App extends Application {
       
    }
    
-   private void createAnimal(){
-      Animal a = new Animal();
+   
+   private void registerEvent(){
+      
+      String n,s,i,v;
+      int a,w;
+      i = "No";
+      v = "No";
+      n = name.getText();
+      s = species.getValue();
+      
+      if (checkDetails(n,age.getText(),weight.getText())==1){
+         a = Integer.parseInt(age.getText());
+         w = Integer.parseInt(weight.getText());
+         if(injured.isSelected()){
+            i= "Yes";
+         }
+         if(vaccinated.isSelected()){
+            v = "Yes";
+         }
+
+         Animal ani = new Animal(n,s,a,w,i,v);
+         db.insertData(ani);
+
+      }
+      else{
+         System.out.println("Failed");
+      }
+
+   }
+
+   private int checkDetails(String n, String a, String w){
+      
+      int age_, weight_;
+      if (n.length()<=2 ){
+         return 0;
+      }
+
+      try{
+         age_ = Integer.parseInt(a);
+         weight_ = Integer.parseInt(w);
+      }
+      catch(Exception e){
+         System.out.println(e);
+         return 0;
+      }
+
+      return 1;
 
    }
    public static void main(String args[]){ 
